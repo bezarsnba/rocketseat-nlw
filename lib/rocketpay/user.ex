@@ -1,3 +1,6 @@
+## Example: User.changeset(%{name: "Beza", password: "123465", email: "beza@beza.com", nickname: "beza",age: 30})
+## params = %{name: "Beza", password: "123465", email: "beza@beza.com.br1", nickname: "bezars1",age: 310}
+## alias Rocketpay.User
 defmodule Rocketpay.User do
   use Ecto.Schema
   import Ecto.Changeset
@@ -14,6 +17,8 @@ defmodule Rocketpay.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :nickname, :string
+
+    timestamps()
   end
   def changeset(params) do
     %__MODULE__{}
@@ -26,8 +31,7 @@ defmodule Rocketpay.User do
     |> unique_constraint([:email])
     |> unique_constraint([:nickname])
     |> put_password_hash()
-
-
+    
   end
   defp put_password_hash(%Changeset{valid?: true, changes: %{password: password} } = changeset) do
     change(changeset, Bcrypt.add_hash(password))
